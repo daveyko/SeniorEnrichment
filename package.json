@@ -1,5 +1,5 @@
 {
-  "name": "Project Name",
+  "name": "SchoolofRock",
   "version": "0.0.1",
   "description": "A review time project",
   "main": "index.js",
@@ -15,13 +15,17 @@
     "skeleton"
   ],
   "dependencies": {
+    "axios": "^0.16.2",
     "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
     "chalk": "^1.1.3",
     "express": "^4.14.0",
     "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
     "pg-native": "^1.10.0",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.6.1",
+    "react-bootstrap": "^0.31.2",
+    "react-dom": "^15.6.1",
     "react-redux": "^4.4.5",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
