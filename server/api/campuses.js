@@ -19,11 +19,13 @@ api.get('/:campusId', (req,res,next) =>{
 
 })
 
-api.post('/addCampus', (req,res,next) =>{
+api.post('/addCampus', (req,res,next) => {
 
   Campus.create(req.body)
   .then(newCampus => res.json(newCampus))
-  .catch(next((new Error('Duplicate'))))
+  .catch((err) => {
+    res.send(err.errors[0].message)
+  })
 })
 
 
@@ -34,6 +36,7 @@ api.put('/:campusId', (req,res,next) => {
     }
   })
   .then(campus => campus.update(req.body))
+  .then(() => res.status(204).end())
   .catch(next)
 })
 

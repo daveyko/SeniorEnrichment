@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import store, {deleteStudentDb, fetchStudents, editStudentDb} from '../store.jsx';
+import store, {deleteStudentDb, editStudentDb} from '../store.jsx';
+import {Link } from "react-router-dom";
 
 
 export default class Student extends Component {
-  // studentId = props.studentProp.id
+
         constructor(props){
             super(props)
             this.state = {
@@ -12,9 +12,10 @@ export default class Student extends Component {
               firstName: '',
               lastName: '',
               email: '',
-              campusId: null,
+              campusId: 0,
               campuses: store.getState().campuses
-            }
+
+        }
             this.handleDelete = this.handleDelete.bind(this);
             this.handleEdit = this.handleEdit.bind(this);
             this.handleChangeLastName = this.handleChangeLastName.bind(this);
@@ -45,82 +46,62 @@ export default class Student extends Component {
         }
 
         handleChangeCampus(e){
-            let campusName = e.target.value;
-            let campusId = this.store.campuses.filter((campus) => {
-            return campus.name === campusName})[0].id
-            this.setState({campusId: campusId})
+
+            this.setState({campusId: e.target.value})
 
         }
 
         submitHandler(e){
           e.preventDefault();
-          store.dispatch(editStudentDb({firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, campusId: this.state.campusId}))
+          store.dispatch(editStudentDb({ id: this.props.studentProp.id, firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, campusId: this.state.campusId}))
+          this.setState({editMode : false})
         }
 
-        // componentDidMount (){
-        //     store.dispatch(fetchStudents());
-        //     this.unsubscribe = store.subscribe(() => this.setState(store.getState()))
-        // }
 
-        // componentWillUnmount() {
-        //     this.unsubscribe();
-        // }
 
         render(){
 
         if (!this.state.editMode) {
-          if (!this.props.studentProp.campusId){
             return (
-            <tr>
-            <td>{this.props.studentProp.firstName}</td>
-            <td>{this.props.studentProp.lastName}</td>
-            <td>{this.props.studentProp.email}</td>
-            <td>N/A</td>
-            <td> <button onClick = {this.handleEdit} type="button" className="btn btn-secondary">Edit</button></td>
-            <td> <button onClick = {this.handleDelete} type="button" className="btn btn-danger">Remove</button></td>
-            <td> <button type="button" className="btn btn-secondary">View</button></td>
-            </tr>
+            <div className="tr">
+              <span className = "td">{this.props.studentProp.firstName}</span>
+              <span className = "td">{this.props.studentProp.lastName}</span>
+              <span className = "td">{this.props.studentProp.email}</span>
+              <span className = "td">{!this.props.studentProp.campusId ?
+                'NA' : this.props.studentProp.campus.name}</span>
+
+              <span className = "td"> <button onClick = {this.handleEdit} type="button" className="btn btn-outline-primary">Edit</button> </span>
+
+              <span className = "td">
+                <button onClick = {this.handleDelete} type="button" className="btn btn-outline-danger">Remove</button>
+              </span>
+
+              <span className = "td">
+                <Link to = {"/student/" + this.props.studentProp.id}>
+                  <button type="button" className="btn btn-outline-primary">View</button>
+                </Link>
+              </span>
+            </div>
                     )
-
-          }
-          else {
-            let campusElement = this.state.campuses.filter((campus) => {
-            return campus.id === this.props.studentProp.campusId
-          })
-          return (
-          <tr>
-            <td>{this.props.studentProp.firstName}</td>
-            <td>{this.props.studentProp.lastName}</td>
-            <td>{this.props.studentProp.email}</td>
-            <td>{campusElement[0].name}</td>
-            <td> <button onClick = {this.handleEdit} type="button" className="btn btn-secondary">Edit</button></td>
-            <td> <button onClick = {this.handleDelete} type="button" className="btn btn-danger">Remove</button></td>
-            <td> <button type="button" className="btn btn-secondary">View</button></td>
-          </tr>
-            )
-
-        }
-      }
-
-      else {
+          } else {
         return (
-
-                <tr>
-                  <td><input onChange = {this.handleChangeFirstName} id = "firstName" type = "text" className = "form-control" placeholder = {this.props.studentProp.firstName} value = {this.state.firstName} /></td>
-                  <td><input onChange = {this.handleChangeLastName} id = "lastName" type = "text"
-                    className = "form-control" placeholder = {this.props.studentProp.lastName} value = {this.state.lastName} /></td>
-                  <td><input onChange = {this.handleChangeEmail} id = "email" type = "text" className = "form-control" placeholder = {this.props.studentProp.email} value = {this.state.email} /></td>
-                  <td><select onChange = {this.handleChangeCampus} className = "form-control">
+                <form className="tr" onSubmit = {this.submitHandler}>
+                  <span className = "td"><input onChange = {this.handleChangeFirstName} id = "firstName" type = "text" className = "form-control" placeholder = {this.props.studentProp.firstName} value = {this.state.firstName} /></span>
+                  <span className = "td"><input onChange = {this.handleChangeLastName} id = "lastName" type = "text"
+                    className = "form-control" placeholder = {this.props.studentProp.lastName} value = {this.state.lastName} /></span>
+                  <span className = "td"><input onChange = {this.handleChangeEmail} id = "email" type = "text" className = "form-control" placeholder = {this.props.studentProp.email} value = {this.state.email} /></span>
+                  <span className = "td"><select onChange = {this.handleChangeCampus} className = "form-control">
+                        <option>select campus</option>
                         {this.state.campuses.map((campus) => {
                       return (
-                          <option key = {campus.id} value = {campus.name}>{campus.name}</option>
+                          <option key = {campus.id} value = {campus.id}>{campus.name}</option>
                       )})}
-                        </select></td>
-                  <td> <button onClick = {this.handleEdit} type="button" className="btn btn-secondary">Edit</button></td>
-                  <td> <button onClick = {this.handleDelete} type="button" className="btn btn-danger">Remove</button></td>
-                  <td> <button type="button" className="btn btn-secondary">View</button></td>
-                  <td> <button type ="submit" className = "btn btn-outline-primary">Submit</button></td>
-                </tr>
+                        </select></span>
+                  <span className = "td"> <button onClick = {this.handleEdit} type="button" className="btn btn-outline-primary">Edit</button></span>
+                  <span className = "td"> <button onClick = {this.handleDelete} type="button" className="btn btn-outline-danger">Remove</button></span>
+                  <span className = "td"> <Link to = {"/student/" + this.props.studentProp.id}><button type="button" className="btn btn-outline-primary">View</button></Link></span>
+                  <span className = "td"> <button type ="submit" className = "btn btn-outline-primary">Submit</button></span>
+                </form>
 
                 )
 
@@ -129,20 +110,3 @@ export default class Student extends Component {
 
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     students: state.students
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//       handleClick: (e) => {
-//       dispatch(deleteStudentDb(studentId))
-//     }
-//   }
-// }
-
-// const newStudentContainer = connect(mapStateToProps, mapDispatchToProps)(Student);
-// export default newStudentContainer;

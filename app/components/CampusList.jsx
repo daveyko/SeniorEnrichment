@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Campus from './campuses.jsx'
 import store, {fetchCampuses} from '../store.jsx';
 import {connect} from 'react-redux';
-import { Route, Switch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+
+//We have both a this.state representing the local state of whether or not we are in edit mode and the redux central state  which we obtain by using mapStateToProps and connect. We need a componentDidMount to send a dispatch to the store to fetch all campuses so that our campus components will be rendered
+
 
 class CampusList extends Component {
     constructor () {
@@ -15,7 +18,6 @@ class CampusList extends Component {
   }
     componentDidMount () {
       store.dispatch(fetchCampuses());
-
     }
 
     handleClick(e){
@@ -27,21 +29,22 @@ class CampusList extends Component {
 
 
         return (
-          <div className="col-xs-10">
-              <h3>Campuses</h3>
-              <Link to = "/addCampus">
-              <button type="button" className="btn btn-primary">Add</button>
-              </Link>
-              <button onClick = {this.handleClick} type="button" className="btn btn-outline-primary">Edit Mode</button>
-                <div className = "row">
-            {this.props.campuses.map((campus) =>{
-              return (
-                      <div key = {campus.id}>
-                      <Campus campusProp = {campus} editMode = {this.state.editMode}/>
-                      </div>
-                     )})}
+          <div className = "container-fluid">
+              <h3 className = "display-3">Campuses</h3>
+                <div className = "btn-group" role = "group" aria-label="Basic example">
+                      <Link to = "/addCampus">
+                        <button type="button" className="btn btn-outline-primary float-right">Add Campus</button>
+                      </Link>
+                          <button onClick = {this.handleClick} type="button" className="btn btn-outline-primary">Edit Mode</button>
                 </div>
-          </div>
+                <div className = "row">
+            {this.props.campuses.map((campus) => {
+              return (
+                      <Campus key = {campus.id} campusProp = {campus} removeMode = {this.state.editMode} />
+                     )})}
+               </div>
+           </div>
+
                 )
       }
 }

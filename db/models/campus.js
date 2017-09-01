@@ -6,7 +6,10 @@ var db = require('../index.js')
 module.exports = db.define('campus', {
   name: {
     type: Sequelize.STRING,
-    unique: true,
+    unique: {
+      args: true,
+      message: 'Campus name must be unique'
+    },
     allowNull: false
   },
   image: {

@@ -8,7 +8,69 @@ form{
   padding: 10px;
 }
 
-img{
+img#campus{
   border-radius: 75%;
 }
 
+div.table
+{
+    display:table;
+}
+
+form.tr, div.tr
+{
+    display:table-row;
+
+}
+
+span.td
+{
+    display:table-cell;
+    padding: 5px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+}
+
+hr{
+  width: 100%;
+  height:1px;
+  background: black;
+}
+
+nav{
+  background-color: #e3f2fd;
+}
+
+.display-3{
+  text-align: center;
+}
+
+.btn-group {
+  float: right;
+}
+
+#img{
+  width: 100%;
+  height: 700px;
+}
+
+div.homepage {
+  height:100%;
+  position:fixed;
+  width:100%;
+  background-image: url("https://pbs.twimg.com/media/BxnNOdlIMAELWkr.png:large");
+  background-repeat: no-repeat;
+  background-size: 100% 100%
+}
+
+img#thumbnail {
+  border-radius: 50%;
+}
+
+button#addPlayer{
+  float:right;
+}
+
+img#player {
+  border-radius: 50%
+}

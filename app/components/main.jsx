@@ -1,43 +1,42 @@
 'use strict'
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom';
 import {render} from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Campuses from './CampusList.jsx';
 import Students from './StudentList.jsx';
-import store, {fetchStudents, fetchCampuses} from '../store'
+import Student from './SingleStudent.jsx';
+import Home from './home.jsx';
 import Navbar from './navbar.jsx';
 import AddStudent from './AddStudent.jsx';
 import AddCampus from './AddCampus.jsx';
+import EditPicture from './EditPicture.jsx'
 
 export default class Main extends Component{
    constructor(){
         super()
    }
-    componentDidMount(){
-        store.dispatch(fetchStudents());
-        store.dispatch(fetchCampuses());
-    }
 
 
-    render(){
+    render (){
       return (
       <div>
       <Navbar />
         <Switch>
-          <Route exact path ="/campus" component = {Campuses} />
-          <Route path = "/campus/:campusId" component = {Students} />
+          <Route exact path ="/campuses" component = {Campuses} />
+          <Route path = "/campus/:campusId" render = {(routeProps) => <Students campusId = {routeProps.match.params.campusId} /> } />
           <Route exact path = "/students" component = {Students} />
+          <Route path = "/student/:studentId" component = {Student} />
           <Route path = "/addStudent" component = {
             AddStudent} />
           <Route path = "/addCampus" component = {
             AddCampus} />
-          <Redirect to = "/campus" />
+          <Route path = "/editPic/:studentId" render = {(routeProps) => <EditPicture studentId = {routeProps.match.params.studentId} /> } />
+          <Route path = "/" component = {Home} />
         </Switch>
       </div>
       )
     }
 
 }
+
+

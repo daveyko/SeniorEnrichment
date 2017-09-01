@@ -39,7 +39,7 @@ const addCampus = (campus) => {
 
 const addStudent = (student) => {
   return {
-    type: ADD_CAMPUS,
+    type: ADD_STUDENT,
     student
   }
 }
@@ -73,7 +73,6 @@ export const fetchCampuses = () => {
     return axios.get('/api/campuses')
     .then(res => res.data)
     .then(campuses => {
-      console.log('campuses', campuses)
       dispatch(getCampuses(campuses))
     })
   }
@@ -84,20 +83,36 @@ export const addCampusDb = (campusObj) => {
     return axios.post('/api/campuses/addCampus', campusObj)
     .then(res => res.data)
     .then(campus => {
-      console.log('campus', campus)
-      dispatch(addCampus(campus))
+      if (campus === 'name must be unique'){
+        alert(campus)
+      } else {
+        dispatch(addCampus(campus))
+      }
     })
+   }
   }
-}
+
 
 export const addStudentDb = (studentObj) => {
   return (dispatch) => {
     return axios.post('/api/students/addStudent', studentObj)
     .then(res => res.data)
     .then(student => {
-      dispatch(addStudent(student))
+
+      if (student.errors){
+        alert(student.errors[0].message)
+      }
+      else if (student.name === "SequelizeForeignKeyConstraintError") {
+        alert("Please select a campus")
+      }
+       else {
+        dispatch(addStudent(student))
+      }
+      })
+    .then(() => {
+      dispatch(fetchStudents())
     })
-  }
+    }
 }
 
 export const deleteStudentDb = (studentId) => {
@@ -134,5 +149,11 @@ export const editStudentDb = (student) => {
 }
 
 
-
-
+export const editCampusDb = (campus) => {
+  return (dispatch) => {
+    return axios.put('/api/campuses/' + campus.id, campus)
+    .then(() => {
+      dispatch(fetchCampuses())
+    })
+  }
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import store, {addCampusDb} from '../store.jsx';
-import {connect} from 'react-redux';
+
 
 export default class addCampus extends Component {
     constructor () {
@@ -34,12 +34,15 @@ export default class addCampus extends Component {
 
   render(){
     return (
+
     <form onSubmit = {this.handleSubmit} >
         <div className="form-group">
           <label>Name: </label>
-          <input onChange = {this.handleChangeName} type="text" className="form-control" id="name" placeholder="Enter Name" value = {this.state.campusName}/>
+            <input onChange = {this.handleChangeName} type="text" className="form-control" id="name" placeholder="Enter Name" value = {this.state.campusName}/>
+
           <label>Image Url: </label>
-          <input onChange = {this.handleChangeImage} type="text" className="form-control" id="image" placeholder="Enter image url" value = {this.state.campusImage}/>
+            <input onChange = {this.handleChangeImage} type="text" className="form-control" id="image" placeholder="Enter image url" value = {this.state.campusImage}/>
+
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
       </form>
